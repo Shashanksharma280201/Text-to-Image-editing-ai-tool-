@@ -8,7 +8,7 @@
 
 
 
-## explainatioin
+## About the program
 
 The repository provided contains the code for HD-Painter, a program developed by Picsart AI Research. HD-Painter is designed for high-resolution image painting. The AI model used in this program is likely a deep neural network, possibly a variant of Generative Adversarial Networks (GANs) or Variational Autoencoders (VAEs), trained on a large dataset of high-resolution images to generate detailed and realistic paintings or image enhancements.
 
