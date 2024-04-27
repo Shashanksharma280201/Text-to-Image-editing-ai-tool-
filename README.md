@@ -10,11 +10,11 @@
 
 ## explainatioin
 
+The repository provided contains the code for HD-Painter, a program developed by Picsart AI Research. HD-Painter is designed for high-resolution image painting. The AI model used in this program is likely a deep neural network, possibly a variant of Generative Adversarial Networks (GANs) or Variational Autoencoders (VAEs), trained on a large dataset of high-resolution images to generate detailed and realistic paintings or image enhancements.
 
+- Generative Adversarial Networks (GANs) : GANs consist of two networks, a generator and a discriminator, trained adversarially to generate realistic images. The generator creates images from random noise, while the discriminator learns to distinguish between real and generated images.
 
-
-
-
+- Variational Autoencoders (VAEs) : VAEs learn a latent representation of images and generate new samples from this learned distribution. They consist of an encoder network that maps input images to a latent space and a decoder network that reconstructs images from this latent space.
 
 
 
@@ -76,6 +76,7 @@ From the project root folder, run this shell command:
 python demo/app.py
 ```
 
+# Results
 
 The results of the [input image](https://github.com/Shashanksharma280201/Text-to-Image-editing-ai-tool-/tree/eec92b9bc4b98575741a1547cf3b47194081866c/Input%20image) are in the  [results](https://github.com/Shashanksharma280201/Text-to-Image-editing-ai-tool-/tree/acd66069092d100469bdb4571e2a7fda3fa91cb3/results) folder
 
