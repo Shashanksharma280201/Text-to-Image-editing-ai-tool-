@@ -159,8 +159,8 @@ def upscale_run(
 ):
     hr_image, hr_mask, gallery, prompt = recover_user_session(session_id)
 
-    if len(gallery) == 0:
-        return Image.open(root_path / '__assets__/demo/sr_info.png')
+    # if len(gallery) == 0:
+    #     return Image.open(root_path / '__assets__/demo/sr_info.png')
 
     torch.cuda.empty_cache()
 
