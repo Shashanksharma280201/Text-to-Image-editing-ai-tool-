@@ -80,5 +80,9 @@ python demo/app.py
 
 The results of the [input image](https://github.com/Shashanksharma280201/Text-to-Image-editing-ai-tool-/tree/eec92b9bc4b98575741a1547cf3b47194081866c/Input%20image) are in the  [results](https://github.com/Shashanksharma280201/Text-to-Image-editing-ai-tool-/tree/acd66069092d100469bdb4571e2a7fda3fa91cb3/results) folder
 
-
+The method to obtain the results as shown in the [results](https://github.com/Shashanksharma280201/Text-to-Image-editing-ai-tool-/tree/acd66069092d100469bdb4571e2a7fda3fa91cb3/results) folder is : 
+- Select the image you want to make changes to
+- Mask the image where you want the changes to be made , with the red marker provided
+- Add the Prompt , for example : create a mask under the object and add the prompt `add a brown table`
+- Wait for the process to run till the image show's up.
 
