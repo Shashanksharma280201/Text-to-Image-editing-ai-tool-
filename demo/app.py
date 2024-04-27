@@ -12,9 +12,9 @@ from PIL import Image
 demo_path = Path(__file__).resolve().parent
 root_path = demo_path.parent
 sys.path.append(str(root_path))
-from src import models # type: ignore
-from src.methods import rasg, sd, sr # type: ignore
-from src.utils import IImage, poisson_blend, image_from_url_text # type: ignore
+from src import models
+from src.methods import rasg, sd, sr
+from src.utils import IImage, poisson_blend, image_from_url_text
 
 
 TMP_DIR = root_path / 'gradio_tmp'
@@ -24,7 +24,45 @@ TMP_DIR.mkdir(exist_ok=True, parents=True)
 
 os.environ['GRADIO_TEMP_DIR'] = str(TMP_DIR)
 
+negative_prompt_str = "text, bad anatomy, bad proportions, blurry, cropped, deformed, disfigured, duplicate, error, extra limbs, gross proportions, jpeg artifacts, long neck, low quality, lowres, malformed, morbid, mutated, mutilated, out of frame, ugly, worst quality"
+positive_prompt_str = "Full HD, 4K, high quality, high resolution"
 
+examples_path = root_path / '__assets__/demo/examples'
+example_inputs = [
+    [f'{examples_path}/images_1024/a40.jpg', f'{examples_path}/images_2048/a40.jpg', 'medieval castle'],
+    [f'{examples_path}/images_1024/a4.jpg', f'{examples_path}/images_2048/a4.jpg', 'parrot'],
+    [f'{examples_path}/images_1024/a65.jpg', f'{examples_path}/images_2048/a65.jpg', 'hoodie'],
+    [f'{examples_path}/images_1024/a54.jpg', f'{examples_path}/images_2048/a54.jpg', 'salad'],
+    [f'{examples_path}/images_1024/a51.jpg', f'{examples_path}/images_2048/a51.jpg', 'space helmet'],
+    [f'{examples_path}/images_1024/a46.jpg', f'{examples_path}/images_2048/a46.jpg', 'stack of books'],
+    [f'{examples_path}/images_1024/a19.jpg', f'{examples_path}/images_2048/a19.jpg', 'antique greek vase'],
+    [f'{examples_path}/images_1024/a2.jpg', f'{examples_path}/images_2048/a2.jpg', 'sunglasses'],
+]
+
+thumbnails = [
+    'https://lh3.googleusercontent.com/pw/ABLVV87bkFc_SRKrbXuk5BTp18dETNm18MLbjoJo6JvwbIkYtjZXrjU_H1dCJIP799OJjHTZmo19mYVyMCC1RLmwqzoZrgwQzfB-SCtxLa83IbXBQ23xzmKoZgsRlPztxNJD6gmXzFyatdLRzDxHIusBQLUz=w3580-h1150-s-no-gm',
+    'https://lh3.googleusercontent.com/pw/ABLVV85RWtrpTf1tMp2p3q37eg5DlFp5znifALK_JTjvxJua8UYMjytVoEy2GUW2cLXgBvQyYKg7GvrWXQ5hkdAsyih5Rf4rFnDq-JoiQYhVZHStCZLKxmeAlQna5ZwMPVTKG1TK63DH_OdK58gvSjWtF2ww=w3580-h1152-s-no-gm',
+    'https://lh3.googleusercontent.com/pw/ABLVV84dkaU6SQs9fyDjajpk1X9JkYp_zQBEnPVL67oi11_05U6-Ys5ydQpuny8GBQCMyVbFKxJ5unn9w__gmP9K0cKQ4_IVoT7Hvfmya71klDqSI7vu9Iy_5P2Il5-0giJFpumtffBA3kryn1xtJdR4vSA0=w2924-h1858-s-no-gm',
+    'https://lh3.googleusercontent.com/pw/ABLVV853ZyjvS4LvcPpVMY9BWz-232omt3-hgRiGcky_3ojE6WLKgtsrftsg1jSrUm2ccT_UOa279CulZy6fdnH_Xg1SunyRBxaRjOK0uxAkUFwb60rR1S4hI2MmhLV7KCi3tw1A-oiGi0f9JINyade-322A=w2622-h1858-s-no-gm',
+    'https://lh3.googleusercontent.com/pw/ABLVV86AJGUVGjb0i6CPg8zlJlWObNY0xdOzM1x5Bq9gKhP-ZWre5aaexRJDxQUO2gmJtRIyohD88FJDG_aVX2G5M0QOyGRWlZmx7tOVXLh-Kbesobxo9MfD-wqk9Ts9O8NUGtIwkWzo9SEs2opKdu83gB9F=w2528-h1858-s-no-gm',
+    'https://lh3.googleusercontent.com/pw/ABLVV87MplTciS7z-4i-eY3B3L0YhaK8UEQ3pTQD6W6uYVGR4hPD9u1WGEGyfg5ddqU-Bx2BrKskDhwxzF746cRhgFU5aPtbYA_-O7KfqXe9IsMxYCgUKxEHBm2ncqy64V-w-N8XOFgUMkAQqcuuNZ8Xapqp=w3580-h1186-s-no-gm',
+    'https://lh3.googleusercontent.com/pw/ABLVV877Esi6l2Kuw3akH5QBlmDAbWydZDZEEJqlZ_N-X7g33NQZU8nv_UKdAVETS7q23byTuldIAhW-q99zCycFB8Yfc-5e_WPNIM9icU0p3gd6DUVZR233ZNUtLca384MYGIhMGud9Y_Xed1I3PpiMhrpG=w2846-h1858-s-no-gm',
+    'https://lh3.googleusercontent.com/pw/ABLVV85hMQbSB6fCokdyut4ke7xTUqjERhuYygnj7T8IIA1k48e9GkaowDywPZzi5QJzZfj7wU3bgBHzjxop19qK1zOi5XDrjfXkn5bwj4MxicHa3TG-Rc-V-c1uyZVUyviyUlkGZ62FxuVROw2x0aGJIcr0=w3580-h1382-s-no-gm'
+]
+
+example_previews = [
+    [thumbnails[0], 'Prompt: medieval castle'],
+    [thumbnails[1], 'Prompt: parrot'],
+    [thumbnails[2], 'Prompt: hoodie'],
+    [thumbnails[3], 'Prompt: salad'],
+    [thumbnails[4], 'Prompt: space helmet'],
+    [thumbnails[5], 'Prompt: stack of books'],
+    [thumbnails[6], 'Prompt: antique greek vase'],
+    [thumbnails[7], 'Prompt: sunglasses'],
+]
+
+# Load models
+# models.pre_download_inpainting_models()
 inpainting_models = OrderedDict([
     ("Dreamshaper Inpainting V8", 'ds8_inp'),
     ("Stable-Inpainting 2.0", 'sd2_inp'),
@@ -159,8 +197,8 @@ def upscale_run(
 ):
     hr_image, hr_mask, gallery, prompt = recover_user_session(session_id)
 
-    # if len(gallery) == 0:
-    #     return Image.open(root_path / '__assets__/demo/sr_info.png')
+    if len(gallery) == 0:
+        return Image.open(root_path / '__assets__/demo/sr_info.png')
 
     torch.cuda.empty_cache()
 
@@ -251,8 +289,8 @@ with gr.Blocks(css=demo_path / 'style.css') as demo:
                 with gr.Row():
                     seed = gr.Number(value = 49123, label = "Seed")
                     batch_size = gr.Number(value = 1, label = "Batch size", minimum=1, maximum=4) 
-                # negative_prompt = gr.Textbox(value=negative_prompt_str, label = "Negative prompt", lines=3)
-                # positive_prompt = gr.Textbox(value=positive_prompt_str, label = "Positive prompt", lines=1)
+                negative_prompt = gr.Textbox(value=negative_prompt_str, label = "Negative prompt", lines=3)
+                positive_prompt = gr.Textbox(value=positive_prompt_str, label = "Positive prompt", lines=1)
 
         with gr.Column():
             with gr.Row():
@@ -275,6 +313,7 @@ with gr.Blocks(css=demo_path / 'style.css') as demo:
     
     with gr.Column():
         example_container = gr.Gallery(
+            example_previews,
             columns = 4,
             preview = True,
             allow_preview = True,
@@ -282,6 +321,8 @@ with gr.Blocks(css=demo_path / 'style.css') as demo:
         )
 
         gr.Examples(
+            [example_inputs[i] + [[example_previews[i]]]
+                for i in range(len(example_previews))],
             [imageMask, hr_image, prompt, example_container],
             elem_id='examples'
         )
@@ -300,6 +341,8 @@ with gr.Blocks(css=demo_path / 'style.css') as demo:
             hr_image,
             seed,
             eta,
+            negative_prompt,
+            positive_prompt,
             ddim_steps,
             guidance_scale,
             batch_size,
